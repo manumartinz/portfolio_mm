@@ -380,3 +380,30 @@ document.querySelectorAll('.copy').forEach((btn) => {
     }, 1600);
   });
 });
+
+/* "Frontend Developer": split into letters for the rainbow wave */
+document.querySelectorAll('.role-title').forEach((title) => {
+  const text = title.textContent;
+  const label = document.createElement('span');
+  label.className = 'sr-only';
+  label.textContent = text;
+  title.replaceChildren(label, ...[...text].map((char, i) => {
+    const span = document.createElement('span');
+    span.className = 'ch';
+    span.setAttribute('aria-hidden', 'true');
+    span.style.setProperty('--i', i);
+    span.textContent = char;
+    return span;
+  }));
+
+  // Touch screens have no hover: a tap plays it once
+  let timer;
+  title.addEventListener('click', () => {
+    if (matchMedia('(hover: hover)').matches) return;
+    title.classList.remove('is-playing');
+    void title.offsetWidth; // restart the animation on repeated taps
+    title.classList.add('is-playing');
+    clearTimeout(timer);
+    timer = setTimeout(() => title.classList.remove('is-playing'), 2200);
+  });
+});

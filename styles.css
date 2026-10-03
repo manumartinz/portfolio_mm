@@ -77,6 +77,42 @@ h1 {
   color: var(--muted);
 }
 
+/* "Frontend Developer": letters turn rainbow and hop in a wave on hover */
+.role-title {
+  display: inline-block;
+  cursor: default;
+}
+
+.role-title .ch {
+  display: inline-block;
+  white-space: pre;
+  transition: color 0.35s;
+  transition-delay: calc(var(--i) * 18ms);
+}
+
+.role-title:hover .ch,
+.role-title.is-playing .ch {
+  color: hsl(calc(var(--i) * 20deg + 200deg) 85% 52%);
+  animation: hop 0.55s var(--ease) both;
+  animation-delay: calc(var(--i) * 30ms);
+}
+
+.role-title:hover,
+.role-title.is-playing {
+  animation: hue 2.4s linear infinite 0.6s;
+}
+
+@keyframes hop {
+  0% { transform: none; }
+  35% { transform: translateY(-7px) rotate(-6deg) scale(1.15); }
+  70% { transform: translateY(1px); }
+  100% { transform: none; }
+}
+
+@keyframes hue {
+  to { filter: hue-rotate(360deg); }
+}
+
 /* ---------- Sidebar ---------- */
 .sidebar {
   position: sticky;
