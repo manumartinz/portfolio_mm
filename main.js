@@ -347,3 +347,36 @@ if (carousel) {
 
   update();
 }
+
+/* Copy email to clipboard */
+document.querySelectorAll('.copy').forEach((btn) => {
+  const toast = btn.parentElement.querySelector('.copy-toast');
+  let timer;
+
+  const copyText = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Fallback for browsers without the async clipboard API
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.style.cssText = 'position:fixed;opacity:0';
+      document.body.append(field);
+      field.select();
+      document.execCommand('copy');
+      field.remove();
+    }
+  };
+
+  btn.addEventListener('click', async () => {
+    await copyText(btn.dataset.copy);
+    btn.classList.add('is-copied');
+    toast.textContent = 'Copiado';
+    toast.classList.add('is-visible');
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      btn.classList.remove('is-copied');
+      toast.classList.remove('is-visible');
+    }, 1600);
+  });
+});

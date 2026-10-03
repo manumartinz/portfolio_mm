@@ -85,9 +85,8 @@ h1 {
 }
 
 .nav {
-  margin: 0 0 20px;
-  padding: 0 0 20px;
-  border-bottom: 1px solid var(--line);
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
@@ -105,32 +104,83 @@ h1 {
 
 .nav a.is-active { font-weight: 500; }
 
-.social {
+/* ---------- Header links: LinkedIn · email [copy] ---------- */
+.links {
   display: flex;
-  gap: 14px;
-  margin: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 10px 0 0;
   padding: 0;
   list-style: none;
+  font-size: 0.9rem;
+  color: var(--muted);
 }
 
-.social a {
+.links li + li::before {
+  content: "·";
+  margin: 0 8px;
+}
+
+.email {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy {
   display: grid;
   place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
   color: var(--muted);
-  transition: color 0.25s, transform 0.35s var(--ease);
+  cursor: pointer;
+  transition: color 0.25s, background 0.25s, transform 0.3s var(--ease);
 }
 
-.social a:hover { color: var(--text); transform: translateY(-2px); }
+.copy:hover { color: var(--text); background: var(--pill-bg); }
+.copy:active { transform: scale(0.88); }
+.copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-.social svg {
-  width: 20px;
-  height: 20px;
+.copy svg {
+  grid-area: 1 / 1;
+  width: 15px;
+  height: 15px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.6;
+  stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
+  transition: opacity 0.25s, transform 0.4s var(--ease);
 }
+
+.copy .check-icon { opacity: 0; transform: scale(0.5); }
+.copy.is-copied { color: var(--text); }
+.copy.is-copied .copy-icon { opacity: 0; transform: scale(0.5); }
+.copy.is-copied .check-icon { opacity: 1; transform: none; }
+
+/* Small "Copiado" bubble above the button */
+.copy-toast {
+  position: absolute;
+  right: -6px;
+  bottom: calc(100% + 4px);
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s, transform 0.35s var(--ease);
+}
+
+.copy-toast.is-visible { opacity: 1; transform: none; }
 
 /* ---------- Text roll (nav links) ---------- */
 .roll .roll-inner {
@@ -636,18 +686,14 @@ footer {
     padding: 32px 16px 48px;
   }
 
-  /* The sidebar dissolves: social icons sit under the header, nav becomes a sticky top bar */
+  /* The sidebar dissolves and its nav becomes a sticky top bar */
   .sidebar { display: contents; }
 
-  .hero { order: 0; grid-column: 1; margin-bottom: 14px; }
-  .social { order: 1; margin-bottom: 20px; }
-  .sidebar > nav { order: 2; }
-  main { order: 3; grid-column: 1; grid-row: auto; }
+  .hero { order: 0; grid-column: 1; margin-bottom: 20px; }
+  .sidebar > nav { order: 1; }
+  main { order: 2; grid-column: 1; grid-row: auto; }
 
   h1 { font-size: 1.15rem; }
-
-  .social { gap: 6px; margin-left: -6px; }
-  .social a { padding: 6px; }
 
   .sidebar > nav {
     position: sticky;
@@ -735,7 +781,7 @@ footer {
   .project:not(.is-current):hover { opacity: 0.55; }
   .project:hover .project-media img { transform: none; }
   .exp-head:hover .logo { transform: none; }
-  .social a:hover { transform: none; }
+  .copy:hover:not(.is-copied) { color: var(--muted); background: none; }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -755,7 +801,7 @@ footer {
 /* ---------- Print ---------- */
 @media print {
   .layout { display: block; padding: 0; }
-  .sidebar, .sidebar > *, .chevron, .tags, footer, .project-media { display: none !important; }
+  .sidebar, .sidebar > *, .chevron, .tags, footer, .project-media, .copy, .copy-toast { display: none !important; }
   .projects { display: block; margin: 0; padding: 0; overflow: visible; }
   .project { opacity: 1 !important; }
   .carousel-controls { display: none; }
