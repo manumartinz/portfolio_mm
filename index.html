@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manuel A. Martínez — Frontend Developer</title>
+  <meta name="description" content="Frontend Developer en Córdoba, Argentina. Angular, React, Next.js y TypeScript. Más de 4 años construyendo sistemas de gestión usados por más de 10.000 usuarios.">
+  <meta name="color-scheme" content="light">
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+
+    <header class="hero">
+      <h1>Manuel A. Martínez</h1>
+      <p class="role">Frontend Developer · Córdoba, Argentina</p>
+    </header>
+
+    <aside class="sidebar">
+      <nav aria-label="Secciones">
+        <ul class="nav">
+          <li><a class="roll" href="#sobre-mi">Sobre mí</a></li>
+          <li><a class="roll" href="#proyectos">Proyectos</a></li>
+          <li><a class="roll" href="#experiencia">Experiencia</a></li>
+          <li><a class="roll" href="#stack">Stack</a></li>
+          <li><a class="roll" href="#formacion">Formación</a></li>
+          <li><a class="roll" href="#idiomas">Idiomas</a></li>
+        </ul>
+      </nav>
+
+      <ul class="social">
+        <li>
+          <a href="https://linkedin.com/in/manuelmartinezx" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V16M8 7.5v.01M12 16v-5.5M12 13a2.5 2.5 0 0 1 5 0v3"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:manumartinzx@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="tel:+5493541334588" aria-label="Teléfono">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <main>
+
+      <section id="sobre-mi" class="intro">
+        <h2 class="sr-only">Sobre mí</h2>
+        <p>
+          Soy desarrollador frontend con más de 4 años construyendo interfaces de sistemas de gestión
+          usados a diario por más de <strong>10.000 usuarios</strong>. Trabajo con Angular (v15 a v21),
+          React y Next.js, con foco en UI responsive, rendimiento y accesibilidad.
+        </p>
+        <p>
+          Hoy desarrollo el frontend de plataformas de gestión y sitios institucionales en
+          <a class="mark" href="https://www.encodelabs.com.ar" target="_blank" rel="noopener">Encodelabs</a>. Antes estuve en la
+          <a class="mark" href="https://www.ucc.edu.ar" target="_blank" rel="noopener">Universidad Católica de Córdoba</a>, donde
+          migré y modernicé el sistema de autogestión que usan alumnos, docentes y áreas administrativas.
+        </p>
+        <p>
+          Me especializo en arquitectura de aplicaciones escalables, formularios complejos multi-paso e
+          integración con APIs REST y WebSockets. Tengo base de backend en Node.js y NestJS, lo que me
+          permite trabajar sobre el contrato de la API y no solo consumirla.
+          <a class="mark" href="mailto:manumartinzx@gmail.com">Escribime</a>.
+        </p>
+      </section>
+
+      <section id="proyectos">
+        <h2 data-type>Proyectos</h2>
+        <p class="section-lead" data-reveal>
+          Algunos de los sistemas en los que trabajé, desde plataformas de gestión con miles de usuarios
+          diarios hasta sitios institucionales.
+        </p>
+
+        <!--
+          Imágenes: screenshots en 16:10 (ej. 1440×900 o 2880×1800 para pantallas retina).
+          Se recortan desde arriba, así que lo importante de la pantalla tiene que estar en la parte superior.
+        -->
+        <div class="carousel" data-reveal aria-roledescription="carrusel" aria-label="Proyectos">
+          <div class="projects" tabindex="0">
+
+          <article class="project">
+            <figure class="project-media">
+              <img src="assets/projects/placeholder.svg" alt="Captura de Userflow" width="1600" height="1000" loading="lazy" draggable="false">
+            </figure>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>
+                  <a class="project-link" href="https://userflow.com.ar/" target="_blank" rel="noopener">
+                    Userflow
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                  </a>
+                </h3>
+                <span class="pill"><a class="co" href="https://www.encodelabs.com.ar" target="_blank" rel="noopener">Encodelabs</a> · para <a class="co" href="https://www.mercadolibre.com.ar" target="_blank" rel="noopener">Mercado Libre</a></span>
+              </div>
+              <p>Plataforma multitenant de gestión documental para equipos de personas: firma electrónica, recibos de haberes con carga masiva, circuitos de documentos configurables y onboarding de colaboradores, con seguimiento en tiempo real y la identidad visual de cada empresa.</p>
+              <ul class="tags"><li>Angular 20</li><li>NestJS</li><li>PostgreSQL</li><li>Multitenant</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <figure class="project-media">
+              <img src="assets/projects/placeholder.svg" alt="Captura de la plataforma de firma electrónica" width="1600" height="1000" loading="lazy" draggable="false">
+            </figure>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Plataforma de firma electrónica</h3>
+                <span class="pill"><a class="co" href="https://www.encodelabs.com.ar" target="_blank" rel="noopener">Encodelabs</a> · para <a class="co" href="https://www.pan-energy.com" target="_blank" rel="noopener">Pan American Energy</a></span>
+              </div>
+              <p>Envío masivo de documentos con flujos de firma configurables, seguimiento del estado de cada archivo por destinatario y validación biométrica de identidad con Veriblink contra RENAPER.</p>
+              <ul class="tags"><li>React</li><li>Next.js</li><li>NestJS</li><li>Microservicios</li><li>Veriblink</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <figure class="project-media">
+              <img src="assets/projects/placeholder.svg" alt="Captura del sistema de autogestión" width="1600" height="1000" loading="lazy" draggable="false">
+            </figure>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Sistema de autogestión</h3>
+                <span class="pill"><a class="co" href="https://www.ucc.edu.ar" target="_blank" rel="noopener">Universidad Católica de Córdoba</a></span>
+              </div>
+              <p>Migración y modernización del sistema core que usan a diario más de 10.000 alumnos, docentes y áreas administrativas.</p>
+              <ul class="tags"><li>Angular</li><li>RxJS</li><li>NestJS</li><li>OracleDB</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <figure class="project-media">
+              <img src="assets/projects/placeholder.svg" alt="Captura del gestor de clases" width="1600" height="1000" loading="lazy" draggable="false">
+            </figure>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Gestor de clases</h3>
+                <span class="pill"><a class="co" href="https://www.ucc.edu.ar" target="_blank" rel="noopener">UCC</a></span>
+              </div>
+              <p>Herramienta para que los docentes administren sus clases, desarrollada de punta a punta.</p>
+              <ul class="tags"><li>React</li><li>APIs REST</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <figure class="project-media">
+              <img src="assets/projects/placeholder.svg" alt="Captura de la plataforma de administración" width="1600" height="1000" loading="lazy" draggable="false">
+            </figure>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Plataforma de administración</h3>
+                <span class="pill"><a class="co" href="https://www.encodelabs.com.ar" target="_blank" rel="noopener">Encodelabs</a></span>
+              </div>
+              <p>Gestión empresarial con formularios multi-paso, roles y notificaciones en tiempo real.</p>
+              <ul class="tags"><li>Angular 21</li><li>Signals</li><li>WebSockets</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <figure class="project-media">
+              <img src="assets/projects/placeholder.svg" alt="Captura de un sitio institucional" width="1600" height="1000" loading="lazy" draggable="false">
+            </figure>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Sitios institucionales</h3>
+                <span class="pill"><a class="co" href="https://www.encodelabs.com.ar" target="_blank" rel="noopener">Encodelabs</a></span>
+              </div>
+              <p>Sitios con SSR y generación estática, mobile first, animaciones con GSAP e internacionalización.</p>
+              <ul class="tags"><li>Next.js</li><li>Tailwind</li><li>GSAP</li><li>i18n</li></ul>
+            </div>
+          </article>
+
+          </div>
+
+          <div class="carousel-controls">
+            <button class="carousel-btn" type="button" data-dir="-1" aria-label="Proyecto anterior">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+            </button>
+            <div class="carousel-dots"></div>
+            <button class="carousel-btn" type="button" data-dir="1" aria-label="Proyecto siguiente">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="experiencia">
+        <h2 data-type>Experiencia</h2>
+
+        <div class="accordion">
+
+          <article class="exp is-open" id="exp-encodelabs" data-reveal>
+            <div class="exp-head">
+              <span class="logo" style="--logo: #1f2937">E</span>
+              <span class="exp-title">
+                <span class="exp-role">Frontend Developer</span>
+                <a class="exp-company co" href="https://www.encodelabs.com.ar" target="_blank" rel="noopener">Encodelabs S.A.</a>
+                <span class="pill">2024 – Hoy</span>
+              </span>
+              <button class="exp-toggle" type="button" aria-expanded="true" aria-controls="panel-encodelabs" aria-label="Detalle de Encodelabs">
+                <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+            </div>
+            <p class="exp-summary">Frontend de sistemas de gestión interna, plataformas empresariales y sitios institucionales.</p>
+            <div class="exp-panel" id="panel-encodelabs">
+              <div class="exp-inner">
+                <ul class="bullets">
+                  <li>Participo desde la definición técnica hasta el release de cada proyecto.</li>
+                  <li>Aplicaciones en <strong>Angular 21</strong> con componentes standalone, signals y lazy loading, sobre una arquitectura modular pensada para escalar.</li>
+                  <li>Aplicaciones y sitios con <strong>React y Next.js</strong>, usando SSR y generación estática para mejorar tiempos de carga y SEO.</li>
+                  <li>Interfaces mobile first con <strong>Tailwind</strong>, animaciones con <strong>GSAP</strong> e internacionalización con i18n.</li>
+                  <li><strong>Formularios wizard multi-paso</strong> con validaciones dinámicas, guardado parcial y estado reactivo con RxJS y signals.</li>
+                  <li>Integración con <strong>APIs REST y WebSockets</strong> para notificaciones y sincronización entre usuarios en tiempo real; autenticación JWT y control de roles.</li>
+                  <li>Endpoints REST con NestJS, Express y Node.js sobre PostgreSQL y MongoDB cuando el proyecto lo requiere.</li>
+                </ul>
+                <ul class="tags">
+                  <li>Angular 21</li><li>React</li><li>Next.js</li><li>Tailwind</li><li>GSAP</li><li>RxJS</li><li>NestJS</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="exp" id="exp-ucc" data-reveal>
+            <div class="exp-head">
+              <span class="logo" style="--logo: #1e3a8a">UCC</span>
+              <span class="exp-title">
+                <span class="exp-role">Frontend Developer</span>
+                <a class="exp-company co" href="https://www.ucc.edu.ar" target="_blank" rel="noopener">Universidad Católica de Córdoba</a>
+                <span class="pill">2022 – 2024</span>
+              </span>
+              <button class="exp-toggle" type="button" aria-expanded="false" aria-controls="panel-ucc" aria-label="Detalle de Universidad Católica de Córdoba">
+                <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+            </div>
+            <p class="exp-summary">Sistemas de autogestión de la primera universidad privada del país, con más de 10.000 usuarios diarios.</p>
+            <div class="exp-panel" id="panel-ucc">
+              <div class="exp-inner">
+                <ul class="bullets">
+                  <li>Desarrollo y evolución del frontend usado a diario por alumnos, docentes y áreas administrativas.</li>
+                  <li><strong>Migración y modernización del sistema core de autogestión</strong>: reescritura de módulos legacy en Angular, mejoras de rendimiento y unificación técnica y visual.</li>
+                  <li>Desarrollo integral del <strong>gestor de clases</strong> para docentes con <strong>React</strong>, desde la interfaz hasta la integración con los servicios.</li>
+                  <li>Formularios extensos de carga académica y administrativa, con validaciones por rol y flujos de varios pasos.</li>
+                  <li>Diseño y consumo de <strong>APIs REST</strong> para el ecosistema académico; soporte backend con NestJS y Express sobre OracleDB y PostgreSQL.</li>
+                </ul>
+                <ul class="tags">
+                  <li>Angular</li><li>React</li><li>NestJS</li><li>Express</li><li>OracleDB</li><li>PostgreSQL</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <section id="stack">
+        <h2 data-type>Stack</h2>
+        <dl class="stack">
+          <div data-reveal>
+            <dt>Frontend</dt>
+            <dd>Angular (15–21), TypeScript, JavaScript, RxJS, Signals, standalone components, lazy loading, formularios reactivos, React, Next.js (SSR / SSG), Zustand, TanStack, Tailwind CSS, mobile first, i18n, accesibilidad, performance</dd>
+          </div>
+          <div data-reveal>
+            <dt>Integración</dt>
+            <dd>APIs REST, WebSockets, autenticación JWT, roles y permisos</dd>
+          </div>
+          <div data-reveal>
+            <dt>Backend</dt>
+            <dd>NestJS, Node.js, Express, PostgreSQL, MongoDB, OracleDB</dd>
+          </div>
+          <div data-reveal>
+            <dt>Herramientas</dt>
+            <dd>Git, Docker, Scrum, Kanban</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section id="formacion">
+        <h2 data-type>Formación</h2>
+        <ul class="rows">
+          <li data-reveal>
+            <span><strong>Analista en Sistemas</strong> <span class="muted"><a class="co" href="https://iresm.edu.ar" target="_blank" rel="noopener">IRESM</a>, Córdoba</span></span>
+            <span class="pill">2020 – 2023</span>
+          </li>
+          <li data-reveal>
+            <span><strong>Curso de Diseño UX/UI</strong> <span class="muted">Centro de e-Learning <a class="co" href="https://www.frba.utn.edu.ar" target="_blank" rel="noopener">UTN FRBA</a></span></span>
+            <span class="pill">2025</span>
+          </li>
+        </ul>
+      </section>
+
+      <section id="idiomas">
+        <h2 data-type>Idiomas</h2>
+        <ul class="rows">
+          <li data-reveal>
+            <span><strong>Español</strong></span>
+            <span class="pill">Nativo</span>
+          </li>
+          <li data-reveal>
+            <span><strong>Inglés</strong> <span class="muted">Lectura técnica y documentación fluida</span></span>
+            <span class="pill">B1 / B2</span>
+          </li>
+        </ul>
+      </section>
+
+      <footer data-reveal>
+        <a class="mark" href="mailto:manumartinzx@gmail.com">manumartinzx@gmail.com</a>
+        <span class="muted">© 2026 Manuel A. Martínez</span>
+      </footer>
+
+    </main>
+  </div>
+</body>
+</html>
