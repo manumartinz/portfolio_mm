@@ -189,7 +189,15 @@ const navLinks = [...document.querySelectorAll('.nav a')];
 const sectionObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (!entry.isIntersecting) return;
-    navLinks.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${entry.target.id}`));
+    navLinks.forEach((a) => {
+      const active = a.getAttribute('href') === `#${entry.target.id}`;
+      a.classList.toggle('is-active', active);
+      // On mobile the nav is a horizontal bar: keep the active link in view
+      const bar = a.closest('.nav');
+      if (active && bar.scrollWidth > bar.clientWidth) {
+        bar.scrollTo({ left: a.parentElement.offsetLeft - 16, behavior: 'smooth' });
+      }
+    });
   });
 }, { rootMargin: '-35% 0px -60% 0px' });
 
@@ -199,14 +207,12 @@ document.querySelectorAll('main section[id]').forEach((s) => sectionObserver.obs
 if (!reduceMotion) {
   const RAYS = 8;
 
-  document.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0) return;
-
+  const spawnBurst = (x, y) => {
     const burst = document.createElement('span');
     burst.className = 'burst';
     burst.setAttribute('aria-hidden', 'true');
-    burst.style.left = `${e.clientX}px`;
-    burst.style.top = `${e.clientY}px`;
+    burst.style.left = `${x}px`;
+    burst.style.top = `${y}px`;
 
     for (let i = 0; i < RAYS; i++) {
       const ray = document.createElement('span');
@@ -217,6 +223,16 @@ if (!reduceMotion) {
 
     document.body.append(burst);
     burst.lastChild.addEventListener('animationend', () => burst.remove(), { once: true });
+  };
+
+  // Mouse bursts on press; touch waits for a real tap so scrolling doesn't trigger it
+  let lastPointer = 'mouse';
+  document.addEventListener('pointerdown', (e) => {
+    lastPointer = e.pointerType;
+    if (e.pointerType !== 'touch' && e.button === 0) spawnBurst(e.clientX, e.clientY);
+  });
+  document.addEventListener('click', (e) => {
+    if (lastPointer === 'touch' && e.detail > 0) spawnBurst(e.clientX, e.clientY);
   });
 }
 

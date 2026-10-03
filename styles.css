@@ -32,6 +32,7 @@ body {
   font-size: 16px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 a { color: inherit; }
@@ -628,24 +629,94 @@ footer {
 
 /* ---------- Mobile ---------- */
 @media (max-width: 900px) {
+  html { scroll-padding-top: 64px; }
+
   .layout {
     grid-template-columns: minmax(0, 1fr);
     padding: 32px 16px 48px;
   }
 
-  .hero,
-  .sidebar,
-  main { grid-column: 1; grid-row: auto; }
+  /* The sidebar dissolves: social icons sit under the header, nav becomes a sticky top bar */
+  .sidebar { display: contents; }
 
-  .hero { margin-bottom: 16px; }
-  .sidebar { position: static; margin-bottom: 40px; }
-  .nav { display: none; }
+  .hero { order: 0; grid-column: 1; margin-bottom: 14px; }
+  .social { order: 1; margin-bottom: 20px; }
+  .sidebar > nav { order: 2; }
+  main { order: 3; grid-column: 1; grid-row: auto; }
+
+  h1 { font-size: 1.15rem; }
+
+  .social { gap: 6px; margin-left: -6px; }
+  .social a { padding: 6px; }
+
+  .sidebar > nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin: 0 -16px 32px;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav {
+    display: flex;
+    gap: 22px;
+    margin: 0;
+    padding: 0 16px;
+    border: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Fade the edges so it's clear the bar scrolls */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 24px), transparent);
+  }
+
+  .nav::-webkit-scrollbar { display: none; }
+  .nav li { flex: none; }
+  .nav li:last-child { padding-right: 16px; }
+
+  .nav a {
+    position: relative;
+    padding: 13px 0;
+    font-size: 0.875rem;
+  }
+
+  /* Active section gets an underline in the bar */
+  .nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text);
+    transform: scaleX(0);
+    transition: transform 0.4s var(--ease);
+  }
+
+  .nav a.is-active::after { transform: scaleX(1); }
 
   section { margin-bottom: 56px; }
+  h2 { font-size: 1.2rem; margin-bottom: 16px; }
 
   .projects { gap: 16px; }
   .project { flex-basis: 86%; }
-  .project-media { padding: 10px 10px 0; }
+  .project-media { padding: 10px 10px 0; border-radius: 12px; }
+  .project-head .pill { white-space: normal; }
+
+  .carousel-controls { margin-top: 20px; }
+  .carousel-btn { width: 36px; height: 36px; }
+  .carousel-dot { position: relative; }
+  .carousel-dot::after { content: ""; position: absolute; inset: -10px -4px; }
+
+  .exp { padding: 18px 0; }
+  .exp-head { gap: 12px; align-items: flex-start; }
+  .logo { width: 30px; height: 30px; margin-top: 1px; }
+  .exp-title { gap: 2px 10px; }
+  .exp-toggle { margin-top: 2px; }
 
   .exp-summary,
   .exp-inner { margin-left: 0; padding-left: 0; }
@@ -655,7 +726,16 @@ footer {
   .rows li { flex-direction: column; gap: 2px; }
   .rows .muted { display: block; margin-left: 0; }
 
-  footer { flex-direction: column; }
+  footer { flex-direction: column; gap: 4px; }
+}
+
+/* ---------- Touch: no sticky hover states ---------- */
+@media (hover: none) {
+  .roll:hover .ch { transform: none; }
+  .project:not(.is-current):hover { opacity: 0.55; }
+  .project:hover .project-media img { transform: none; }
+  .exp-head:hover .logo { transform: none; }
+  .social a:hover { transform: none; }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -675,7 +755,7 @@ footer {
 /* ---------- Print ---------- */
 @media print {
   .layout { display: block; padding: 0; }
-  .sidebar, .chevron, .tags, footer, .project-media { display: none; }
+  .sidebar, .sidebar > *, .chevron, .tags, footer, .project-media { display: none !important; }
   .projects { display: block; margin: 0; padding: 0; overflow: visible; }
   .project { opacity: 1 !important; }
   .carousel-controls { display: none; }
