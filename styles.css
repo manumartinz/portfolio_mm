@@ -574,6 +574,14 @@ footer {
   animation-delay: calc(var(--i) * 18ms);
 }
 
+/* Jumping away from the intro shows it complete at once */
+.intro.is-done .w {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
 @keyframes word-in {
   to { opacity: 1; transform: none; filter: none; }
 }

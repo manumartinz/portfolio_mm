@@ -17,8 +17,6 @@ document.querySelectorAll('.roll').forEach((link) => {
   link.replaceChildren(inner);
 });
 
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 /* Intro: wrap every word so it fades in one after another */
 let introWords = 0;
 if (!reduceMotion) {
@@ -64,12 +62,20 @@ document.querySelectorAll('.exp').forEach((item) => {
   });
 });
 
+/*
+  When the visitor jumps to a section from the nav, everything queued before it
+  is shown at once so the target animates right away.
+*/
+let rushTarget = null;
+
 /* Typewriter for section headings; resolves once the last letter is in */
 const typeHeading = (el) => new Promise((resolve) => {
   const text = el.dataset.text;
   let i = 0;
   el.classList.add('is-typing');
   const tick = () => {
+    // A jump to another section finishes this heading instantly
+    if (rushTarget && !rushTarget.contains(el)) i = text.length - 1;
     el.textContent = text.slice(0, ++i);
     if (i < text.length) {
       setTimeout(tick, 45 + Math.random() * 40);
@@ -93,18 +99,65 @@ if (!reduceMotion) {
   Everything animates in sequence: the intro finishes, then each section types its
   heading, and only then does that section's content appear. `chain` is the queue.
 */
-let chain = reduceMotion ? Promise.resolve() : wait(Math.max(0, introWords * 18 + 600 - 250));
+let finishIntro;
+const introDone = new Promise((resolve) => {
+  finishIntro = resolve;
+  setTimeout(resolve, Math.max(0, introWords * 18 + 600 - 250));
+});
+
+let chain = reduceMotion ? Promise.resolve() : introDone;
 const sectionReady = new Map();
+
+// Sections currently on screen
+const onScreen = new Set();
+const screenObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e) => (e.isIntersecting ? onScreen.add(e.target) : onScreen.delete(e.target)));
+});
+document.querySelectorAll('main section').forEach((s) => screenObserver.observe(s));
+
+const whenOnScreen = (el) => new Promise((resolve) => {
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    resolve();
+  }, { rootMargin: '0px 0px -25% 0px' });
+  observer.observe(el);
+});
+
+const playHeading = (section, heading) => {
+  if (!heading || reduceMotion) return null;
+  // The jump target types once the smooth scroll brings it into view
+  if (rushTarget === section) return whenOnScreen(section).then(() => typeHeading(heading));
+  const skip = (rushTarget && rushTarget !== section) || !onScreen.has(section);
+  if (skip) {
+    heading.textContent = heading.dataset.text;
+    return null;
+  }
+  return typeHeading(heading);
+};
 
 const whenReady = (section) => {
   if (!section) return chain;
   if (!sectionReady.has(section)) {
     const heading = section.querySelector('h2[data-type]');
-    chain = chain.then(() => (heading && !reduceMotion ? typeHeading(heading) : null));
+    chain = chain.then(() => playHeading(section, heading));
     sectionReady.set(section, chain);
   }
   return sectionReady.get(section);
 };
+
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', () => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target || reduceMotion) return;
+    rushTarget = target;
+    document.querySelector('.intro')?.classList.add('is-done');
+    finishIntro();
+    whenReady(target).then(() => {
+      if (rushTarget === target) rushTarget = null;
+    });
+  });
+});
 
 /* Reveal on scroll, staggered within each group */
 const groups = new Map();
