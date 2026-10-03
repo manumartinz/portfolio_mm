@@ -78,10 +78,10 @@ const typeHeading = (el) => new Promise((resolve) => {
     if (rushTarget && !rushTarget.contains(el)) i = text.length - 1;
     el.textContent = text.slice(0, ++i);
     if (i < text.length) {
-      setTimeout(tick, 45 + Math.random() * 40);
+      setTimeout(tick, 28 + Math.random() * 22);
     } else {
       setTimeout(() => el.classList.remove('is-typing'), 900);
-      setTimeout(resolve, 150);
+      setTimeout(resolve, 80);
     }
   };
   tick();
@@ -102,7 +102,7 @@ if (!reduceMotion) {
 let finishIntro;
 const introDone = new Promise((resolve) => {
   finishIntro = resolve;
-  setTimeout(resolve, Math.max(0, introWords * 18 + 600 - 250));
+  setTimeout(resolve, Math.max(0, introWords * 10 + 450 - 250));
 });
 
 let chain = reduceMotion ? Promise.resolve() : introDone;
@@ -164,7 +164,7 @@ const groups = new Map();
 document.querySelectorAll('[data-reveal]').forEach((el) => {
   const parent = el.parentElement;
   const n = groups.get(parent) ?? 0;
-  el.style.setProperty('--d', `${n * 90}ms`);
+  el.style.setProperty('--d', `${n * 60}ms`);
   groups.set(parent, n + 1);
 });
 

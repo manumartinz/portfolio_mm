@@ -554,7 +554,7 @@ footer {
   opacity: 0;
   transform: translateY(14px);
   filter: blur(4px);
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), filter 0.8s var(--ease);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), filter 0.6s var(--ease);
   transition-delay: var(--d, 0ms);
 }
 
@@ -570,8 +570,8 @@ footer {
   opacity: 0;
   transform: translateY(6px);
   filter: blur(3px);
-  animation: word-in 0.6s var(--ease) forwards;
-  animation-delay: calc(var(--i) * 18ms);
+  animation: word-in 0.45s var(--ease) forwards;
+  animation-delay: calc(var(--i) * 10ms);
 }
 
 /* Jumping away from the intro shows it complete at once */
