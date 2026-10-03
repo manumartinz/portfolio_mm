@@ -17,7 +17,10 @@ document.querySelectorAll('.roll').forEach((link) => {
   link.replaceChildren(inner);
 });
 
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 /* Intro: wrap every word so it fades in one after another */
+let introWords = 0;
 if (!reduceMotion) {
   let index = 0;
   document.querySelectorAll('.intro p').forEach((p) => {
@@ -42,6 +45,7 @@ if (!reduceMotion) {
       node.replaceWith(fragment);
     });
   });
+  introWords = index;
 }
 
 /* Accordion */
@@ -60,8 +64,8 @@ document.querySelectorAll('.exp').forEach((item) => {
   });
 });
 
-/* Typewriter for section headings */
-const typeHeading = (el) => {
+/* Typewriter for section headings; resolves once the last letter is in */
+const typeHeading = (el) => new Promise((resolve) => {
   const text = el.dataset.text;
   let i = 0;
   el.classList.add('is-typing');
@@ -71,21 +75,38 @@ const typeHeading = (el) => {
       setTimeout(tick, 45 + Math.random() * 40);
     } else {
       setTimeout(() => el.classList.remove('is-typing'), 900);
+      setTimeout(resolve, 150);
     }
   };
   tick();
-};
+});
 
-const headings = document.querySelectorAll('h2[data-type]');
 if (!reduceMotion) {
-  headings.forEach((h) => {
+  document.querySelectorAll('h2[data-type]').forEach((h) => {
     h.dataset.text = h.textContent;
     h.setAttribute('aria-label', h.textContent);
     h.textContent = '';
   });
 }
 
-/* Reveal on scroll */
+/*
+  Everything animates in sequence: the intro finishes, then each section types its
+  heading, and only then does that section's content appear. `chain` is the queue.
+*/
+let chain = reduceMotion ? Promise.resolve() : wait(Math.max(0, introWords * 18 + 600 - 250));
+const sectionReady = new Map();
+
+const whenReady = (section) => {
+  if (!section) return chain;
+  if (!sectionReady.has(section)) {
+    const heading = section.querySelector('h2[data-type]');
+    chain = chain.then(() => (heading && !reduceMotion ? typeHeading(heading) : null));
+    sectionReady.set(section, chain);
+  }
+  return sectionReady.get(section);
+};
+
+/* Reveal on scroll, staggered within each group */
 const groups = new Map();
 document.querySelectorAll('[data-reveal]').forEach((el) => {
   const parent = el.parentElement;
@@ -98,12 +119,13 @@ const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (!entry.isIntersecting) return;
     const el = entry.target;
-    if (el.matches('h2[data-type]')) {
-      if (!reduceMotion) typeHeading(el);
-    } else {
-      el.classList.add('is-in');
-    }
     revealObserver.unobserve(el);
+    const section = el.closest('main section');
+    if (el.matches('h2[data-type]')) {
+      whenReady(section);
+    } else {
+      whenReady(section).then(() => el.classList.add('is-in'));
+    }
   });
 }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
 
