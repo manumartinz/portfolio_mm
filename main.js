@@ -413,3 +413,66 @@ document.querySelectorAll('.role-title').forEach((title) => {
     timer = setTimeout(() => title.classList.remove('is-playing'), 2200);
   });
 });
+
+/* Custom cursor: a dot that follows the mouse and changes over links and the carousel */
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  const cursor = document.createElement('div');
+  cursor.className = 'cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  cursor.innerHTML = `
+    <div class="cursor-dot">
+      <span class="cursor-arrows">
+        <svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg>
+        <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+      </span>
+    </div>`;
+  document.body.append(cursor);
+  document.documentElement.classList.add('has-cursor');
+
+  let x = -100;
+  let y = -100;
+  let cx = x;
+  let cy = y;
+  let raf = null;
+
+  // Eases toward the pointer; with reduced motion it jumps straight there
+  const render = () => {
+    const ease = reduceMotion ? 1 : 0.35;
+    cx += (x - cx) * ease;
+    cy += (y - cy) * ease;
+    cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+    raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.1 ? requestAnimationFrame(render) : null;
+  };
+
+  const interactive = 'a, button, .exp-head, .role-title';
+
+  document.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    x = e.clientX;
+    y = e.clientY;
+    if (!cursor.classList.contains('is-visible')) {
+      cx = x;
+      cy = y;
+      cursor.classList.add('is-visible');
+    }
+    raf ??= requestAnimationFrame(render);
+  });
+
+  document.addEventListener('pointerover', (e) => {
+    const onTrack = Boolean(e.target.closest('.projects'));
+    const onLink = Boolean(e.target.closest(interactive));
+    // Inside the carousel, links (e.g. Userflow) still read as links
+    cursor.classList.toggle('is-drag', onTrack && !onLink);
+    cursor.classList.toggle('is-link', onLink);
+  });
+
+  document.addEventListener('pointerdown', (e) => {
+    cursor.classList.add('is-down');
+    if (e.target.closest('.projects')) cursor.classList.add('is-dragging');
+  });
+
+  addEventListener('pointerup', () => cursor.classList.remove('is-down', 'is-dragging'));
+
+  document.documentElement.addEventListener('mouseleave', () => cursor.classList.remove('is-visible'));
+  document.documentElement.addEventListener('mouseenter', () => cursor.classList.add('is-visible'));
+}

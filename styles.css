@@ -716,6 +716,80 @@ footer {
 
 @keyframes caret { 50% { opacity: 0; } }
 
+/* ---------- Custom cursor (mouse only; .has-cursor is set from JS) ---------- */
+.has-cursor,
+.has-cursor * { cursor: none !important; }
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+  will-change: transform;
+}
+
+.cursor.is-visible { opacity: 1; }
+
+.cursor-dot {
+  display: grid;
+  place-items: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  transform: translate(-50%, -50%) scale(1);
+  transition:
+    width 0.35s var(--ease),
+    height 0.35s var(--ease),
+    background 0.3s,
+    transform 0.25s var(--ease);
+}
+
+/* Over links and buttons: a soft, larger disc */
+.cursor.is-link .cursor-dot {
+  width: 34px;
+  height: 34px;
+  background: rgb(28 25 23 / 0.1);
+}
+
+/* Over the carousel: a solid disc with ‹ › replacing the grab hand */
+.cursor.is-drag .cursor-dot {
+  width: 58px;
+  height: 58px;
+  background: var(--text);
+}
+
+.cursor-arrows {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s, transform 0.35s var(--ease), gap 0.35s var(--ease);
+}
+
+.cursor-arrows svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cursor.is-drag .cursor-arrows { opacity: 1; transform: none; }
+
+/* While dragging: the disc tightens and the arrows spread */
+.cursor.is-dragging .cursor-dot { width: 46px; height: 46px; }
+.cursor.is-dragging .cursor-arrows { gap: 9px; }
+
+/* Press feedback */
+.cursor.is-down .cursor-dot { transform: translate(-50%, -50%) scale(0.75); }
+
 /* ---------- Click burst ---------- */
 .burst {
   position: fixed;
@@ -864,7 +938,7 @@ footer {
 /* ---------- Print ---------- */
 @media print {
   .layout { display: block; padding: 0; }
-  .sidebar, .sidebar > *, .chevron, .tags, footer, .project-media, .copy, .copy-toast { display: none !important; }
+  .sidebar, .sidebar > *, .chevron, .tags, footer, .project-media, .copy, .copy-toast, .cursor, .burst { display: none !important; }
   .projects { display: block; margin: 0; padding: 0; overflow: visible; }
   .project-media { opacity: 1 !important; }
   .carousel-controls { display: none; }
