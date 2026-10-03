@@ -1,9 +1,19 @@
+/* Inter, self-hosted: variable font covering weights 400–700, latin subset */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/assets/fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   color-scheme: light;
 
   --bg: #f6f5f2;
   --text: #1c1917;
-  --muted: #78716c;
+  --muted: #6b645e;
   --line: #e2dfd8;
   --accent: #2563eb;
   --accent-soft: #dbe6fd;
@@ -303,12 +313,12 @@ h2 {
 .project {
   flex: 0 0 min(520px, 82%);
   scroll-snap-align: start;
-  transition: opacity 0.5s var(--ease);
 }
 
-/* Cards that aren't the active one dim slightly */
-.project:not(.is-current) { opacity: 0.55; }
-.project:not(.is-current):hover { opacity: 0.85; }
+/* Cards that aren't the active one dim their image (text keeps full contrast) */
+.project-media { transition: opacity 0.5s var(--ease); }
+.project:not(.is-current) .project-media { opacity: 0.45; }
+.project:not(.is-current):hover .project-media { opacity: 0.8; }
 
 .project-media {
   margin: 0 0 16px;
@@ -416,25 +426,36 @@ h2 {
 .carousel-dots {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 0 6px;
 }
 
+/* 24px hit area; the visible dot is the ::before */
 .carousel-dot {
-  width: 6px;
-  height: 6px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: 0;
+  background: none;
+  cursor: pointer;
+  transition: width 0.45s var(--ease);
+}
+
+.carousel-dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
   background: var(--muted);
   opacity: 0.4;
-  cursor: pointer;
   transition: width 0.45s var(--ease), opacity 0.3s, background 0.3s;
 }
 
-.carousel-dot:hover { opacity: 0.7; }
+.carousel-dot:hover::before { opacity: 0.7; }
 
-.carousel-dot.is-active {
+.carousel-dot.is-active { width: 30px; }
+
+.carousel-dot.is-active::before {
   width: 18px;
   background: var(--text);
   opacity: 1;
@@ -673,8 +694,16 @@ footer {
   to { opacity: 1; transform: none; filter: none; }
 }
 
-/* Typed headings */
-.is-typing::after {
+/* Typed headings: letters exist from the start, hidden until typed */
+.tl { visibility: hidden; }
+.tl.on { visibility: visible; }
+
+.tl.is-caret { position: relative; }
+
+.tl.is-caret::after {
+  position: absolute;
+  left: 100%;
+  top: 0.2em;
   content: "";
   display: inline-block;
   width: 2px;
@@ -791,8 +820,6 @@ footer {
 
   .carousel-controls { margin-top: 20px; }
   .carousel-btn { width: 36px; height: 36px; }
-  .carousel-dot { position: relative; }
-  .carousel-dot::after { content: ""; position: absolute; inset: -10px -4px; }
 
   .exp { padding: 18px 0; }
   .exp-head { gap: 12px; align-items: flex-start; }
@@ -814,7 +841,7 @@ footer {
 /* ---------- Touch: no sticky hover states ---------- */
 @media (hover: none) {
   .roll:hover .ch { transform: none; }
-  .project:not(.is-current):hover { opacity: 0.55; }
+  .project:not(.is-current):hover .project-media { opacity: 0.45; }
   .project:hover .project-media img { transform: none; }
   .exp-head:hover .logo { transform: none; }
   .copy:hover:not(.is-copied) { color: var(--muted); background: none; }
@@ -839,7 +866,7 @@ footer {
   .layout { display: block; padding: 0; }
   .sidebar, .sidebar > *, .chevron, .tags, footer, .project-media, .copy, .copy-toast { display: none !important; }
   .projects { display: block; margin: 0; padding: 0; overflow: visible; }
-  .project { opacity: 1 !important; }
+  .project-media { opacity: 1 !important; }
   .carousel-controls { display: none; }
   .project { margin-bottom: 12px; break-inside: avoid; }
   .hero { margin-bottom: 24px; }
@@ -848,4 +875,5 @@ footer {
   .exp-panel { grid-template-rows: 1fr !important; }
   .js [data-reveal], .w, .exp-inner .bullets li { opacity: 1 !important; transform: none !important; filter: none !important; }
   .mark { background: none; text-decoration: none; }
+  .tl { visibility: visible !important; }
 }

@@ -3,10 +3,8 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* Nav links: split text into letters for the roll effect */
 document.querySelectorAll('.roll').forEach((link) => {
   const text = link.textContent;
-  link.setAttribute('aria-label', text);
   const inner = document.createElement('span');
   inner.className = 'roll-inner';
-  inner.setAttribute('aria-hidden', 'true');
   [...text].forEach((char, i) => {
     const span = document.createElement('span');
     span.className = 'ch';
@@ -68,19 +66,28 @@ document.querySelectorAll('.exp').forEach((item) => {
 */
 let rushTarget = null;
 
-/* Typewriter for section headings; resolves once the last letter is in */
+/*
+  Typewriter for section headings. The text always stays in the DOM (for search engines
+  and screen readers): letters are wrapped in spans that start hidden and get revealed.
+*/
+const showHeading = (el) => {
+  el.querySelectorAll('.tl').forEach((l) => l.classList.add('on'));
+  el.querySelector('.is-caret')?.classList.remove('is-caret');
+};
+
 const typeHeading = (el) => new Promise((resolve) => {
-  const text = el.dataset.text;
+  const letters = [...el.querySelectorAll('.tl')];
   let i = 0;
-  el.classList.add('is-typing');
   const tick = () => {
     // A jump to another section finishes this heading instantly
-    if (rushTarget && !rushTarget.contains(el)) i = text.length - 1;
-    el.textContent = text.slice(0, ++i);
-    if (i < text.length) {
+    if (rushTarget && !rushTarget.contains(el)) i = letters.length - 1;
+    letters.forEach((l, n) => l.classList.toggle('on', n <= i));
+    el.querySelector('.is-caret')?.classList.remove('is-caret');
+    letters[i].classList.add('is-caret');
+    if (++i < letters.length) {
       setTimeout(tick, 28 + Math.random() * 22);
     } else {
-      setTimeout(() => el.classList.remove('is-typing'), 900);
+      setTimeout(() => letters[letters.length - 1].classList.remove('is-caret'), 900);
       setTimeout(resolve, 80);
     }
   };
@@ -89,9 +96,12 @@ const typeHeading = (el) => new Promise((resolve) => {
 
 if (!reduceMotion) {
   document.querySelectorAll('h2[data-type]').forEach((h) => {
-    h.dataset.text = h.textContent;
-    h.setAttribute('aria-label', h.textContent);
-    h.textContent = '';
+    h.replaceChildren(...[...h.textContent].map((char) => {
+      const span = document.createElement('span');
+      span.className = 'tl';
+      span.textContent = char;
+      return span;
+    }));
   });
 }
 
@@ -130,7 +140,7 @@ const playHeading = (section, heading) => {
   if (rushTarget === section) return whenOnScreen(section).then(() => typeHeading(heading));
   const skip = (rushTarget && rushTarget !== section) || !onScreen.has(section);
   if (skip) {
-    heading.textContent = heading.dataset.text;
+    showHeading(heading);
     return null;
   }
   return typeHeading(heading);
@@ -383,14 +393,10 @@ document.querySelectorAll('.copy').forEach((btn) => {
 
 /* "Frontend Developer": split into letters for the rainbow wave */
 document.querySelectorAll('.role-title').forEach((title) => {
-  const text = title.textContent;
-  const label = document.createElement('span');
-  label.className = 'sr-only';
-  label.textContent = text;
-  title.replaceChildren(label, ...[...text].map((char, i) => {
+  // Plain inline spans: the text reads once, as written, for crawlers and screen readers
+  title.replaceChildren(...[...title.textContent].map((char, i) => {
     const span = document.createElement('span');
     span.className = 'ch';
-    span.setAttribute('aria-hidden', 'true');
     span.style.setProperty('--i', i);
     span.textContent = char;
     return span;
