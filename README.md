@@ -1,6 +1,6 @@
 # portfolio_mm
 
-CV / portfolio personal de Manuel A. Martínez — Frontend Developer.
+CV / portfolio personal de Manuel A. Martínez — Fullstack Developer.
 
 Sitio estático (HTML + CSS, sin build). Para verlo, abrir `index.html` en el navegador.
 

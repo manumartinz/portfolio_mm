@@ -391,7 +391,7 @@ document.querySelectorAll('.copy').forEach((btn) => {
   });
 });
 
-/* "Frontend Developer": split into letters for the rainbow wave */
+/* "Fullstack Developer": split into letters for the rainbow wave */
 document.querySelectorAll('.role-title').forEach((title) => {
   // Plain inline spans: the text reads once, as written, for crawlers and screen readers
   title.replaceChildren(...[...title.textContent].map((char, i) => {
